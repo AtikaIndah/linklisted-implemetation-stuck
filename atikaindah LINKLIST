@@ -1,158 +1,212 @@
-#include <iostream>
-#define MAX_STACK_SIZE 10
+include<iostream>
 using namespace std;
 
-struct Element{
-	int data;
-	int top;
-	Element *next;
+struct TNode
+{
+int data;
+TNode *next;
 };
 
-class myStack{
-	private:
-	Element tumpuk;
-	Element *head = NULL;
-	
-	public:
-	void setawal(){
-		tumpuk.top = -1;
-	}
-	
-	bool isEmpty(){
-        if(tumpuk.top == -1){
-			return 1;
-		}else{
-			return 0;
-		}
-    }
-    
-	bool isFull(){
-        if(tumpuk.top == MAX_STACK_SIZE-1){
-			return 1;
-		}else{
-			return 0;
-		}
-    }
-    
-    void push(int input){
-		if(isFull()){
-			cout << "Tumpukan Penuh";
-		}else{
-			Element *tmp = new Element;
-			tmp->data = input;
-			tmp->next=NULL;
-			if(isEmpty())
-			{
-				head=tmp;
-				head->next=NULL;
-			}else{
-				tmp->next=head;
-				head=tmp;
-			}
-			cout<<"Push berhasil \n";
-			tumpuk.top++;
-		}
-	}
-	
-	void pop(){
-		if (isEmpty()){
-			cout<<"\nTumpukan Kosong\n";
-		}else{
-			Element *tmp = new Element;
-			tmp = head;
-			head = head->next;
-			delete tmp;
-			cout<<"\nPop Berhasil\n";
-			tumpuk.top--;
-		}	
-	}
-		
-	void getTop(){
-		if(isEmpty()){
-			cout << "Tumpukan Kosong";
-		}else{
-			cout << head->data;
-		}
-	}
-	
-	void print(){
-		if(isEmpty()){
-			cout << "Tumpukan Kosong" << endl;
-		}else{
-			cout << "Isi Tumpukan : " << endl;
-			Element *tmp = new Element;
-			tmp = head;
-			while(tmp!=NULL)
-			{
-				cout<<tmp->data<<"  ";
-				tmp=tmp->next;
-			}
-		}
-	}
-};
+TNode*head;
 
-int nama_menu();
-
-int main(){
-	myStack obj;
-	int menu,val;
-	obj.setawal();
-	do{
-		menu = nama_menu();
-		switch(menu){
-			case 1:
-					cout << "Masukan Angka yang mau dipush: ";cin>>val;
-					obj.push(val);
-					cin.ignore();
-					cin.get();
-					break;
-			case 2:
-					if(obj.isEmpty()){
-						cout << "Tumpukan Kosong" << endl;
-					}else{
-						cout << "Angka ";obj.getTop(); cout << " akan dihapus";
-						cin.get();
-						obj.pop();
-					}
-					break;
-			case 3:
-					if(obj.isEmpty()){
-						cout << "Tumpukan Kosong" << endl;
-					}else{
-						cout << "Elemen Paling Atas adalah ";obj.getTop();
-						cin.get();
-					}
-					break;
-			case 4:
-					obj.print();
-					cin.get();
-					break;
-			case 5:
-					exit(0);
-			default:
-					cout <<"\t\nPilihan tidak ada";
-					cin.get();
-					break;
-		}
-		system("clear");
-	}while (menu != 5);
-		cin.get();
-		return 0;
+void init()
+{
+head = NULL;
 }
 
-int nama_menu(){
-	cout<<"\t\t  https://github.com/petruk ciwi-ciwi/Stack_LIFO"<<endl;
-	
-	cout<<"\t\t     STACK WITH LINKED LIST CONCEPT"<<endl<<endl;
-	int menu;
-	cout << "MENU : "<<endl<<endl;
-	cout << "1. Push"<<endl;
-	cout << "2. Pop"<<endl;
-	cout << "3. Get Top"<<endl;
-	cout << "4. Print Stack List"<<endl;
-	cout << "5. Exit..."<<endl<<endl;
-	cout << "Pilihan : "; cin >> menu;
-	cin.ignore();
-	system("clear");
-	return menu;
+int isEmpty()
+{
+if(head == NULL)
+return 1;
+else
+return 0;
+}
+
+void push(int inputan)
+{
+TNode *baru;
+baru = new TNode;
+baru->data = inputan;
+baru->next = head;
+head = baru;
+}
+
+
+void pop()
+{
+
+TNode *bantu;
+int data;
+if (isEmpty()==0)
+{
+bantu = head;
+data = bantu -> data;
+head = head -> next;
+delete bantu;
+}else cout<<"Data kosong\n";
+}
+
+void dequeue()
+{
+TNode *hapus,*bantu;
+int data;
+if (isEmpty()==0)
+{
+if(head->next != NULL)
+{
+bantu = head;
+while(bantu->next->next!=NULL)
+{
+bantu = bantu->next;
+}
+hapus = bantu->next;
+data = hapus->data;
+bantu->next = NULL;
+delete hapus;
+}
+} else
+cout<<"Masih kosong\n";
+}
+
+void printstack()
+{
+TNode *bantu;
+bantu = head;
+if (isEmpty()==0)
+{
+while (bantu != NULL)
+{
+cout<<bantu->data;
+cout<<endl;
+bantu = bantu->next;
+}
+}
+else cout<<"Data kosong\n";
+}
+
+
+void clear()
+{
+TNode *bantu,*hapus;
+bantu = head;
+if (isEmpty()==0)
+{
+while(bantu!=NULL)
+{
+hapus = bantu;
+bantu = bantu->next;
+delete hapus;
+}
+head = NULL;
+}
+else cout<<"Data kosong\n";
+}
+
+void mainstack()
+{
+int inputan,menu;
+do
+{
+cout<<" ______________ \n";
+cout<<"| MENU PROGRAM |\n";
+cout<<"|______________|\n";
+cout<<"1. Push\n";
+cout<<"2. Pop\n";
+cout<<"3. Clear\n";
+cout<<"4. Print\n";
+cout<<"5. Exit\n";
+cout<<"menu : ";
+cin>>menu;
+if (menu<1||menu>5)
+{
+cout<<"\n Maaf..pilihan anda salah!!!tolong ulangi lagi!!\n\n";
+}
+else
+{
+switch (menu)
+{
+case 1 :
+{
+cout<<"Masukkan data= ";
+cin>>inputan;
+push(inputan);
+cout<<endl<<endl;
+
+}
+break;
+case 2 :
+{
+
+cout<<endl;
+pop();
+cout<<endl;
+}
+break;
+case 3 :
+{
+cout<<endl;
+clear();
+cout<<endl;
+}
+break;
+case 4 :
+{
+cout<<endl;
+printstack();
+cout<<endl;
+}
+break;
+}
+}
+
+}while(menu!=5);
+clear();
+}
+
+void mainqueue()
+{
+int inputan,menu;
+do
+{
+
+cout<<"\t________________________________________________________________ "<<endl;
+cout<<"\t|| ||"<<endl;
+cout<<"\t|| IMPLEMENTASI SINGLE STACK DAN QUEUE NON CIRCULAR ||"<<endl;
+cout<<"\t|| MENGGUNAKAN SINGLE LINKED LIST NON CIRCULAR ||"<<endl;
+cout<<"\t|| ||"<<endl;
+cout<<"\t________________________________________________________________"<<endl<<endl<<endl;
+
+cout<<" MENU UTAMA \n";
+cout<<"________________________________________________________\n";
+cout<<"1. Linked List Non Circular Dengan Stack \n";
+cout<<"2. Exit \n";
+cout<<endl;
+cout<<"Masukan pilihan anda!! : ";
+cin>>menu;
+cout<<endl;
+if (menu<1||menu>3)
+{
+cout<<"\n Maaf..pilihan anda salah!!!tolong ulangi lagi!!\n\n";
+}
+else
+{
+switch (menu)
+{
+case 1:
+{
+cout<<endl<<endl;
+mainstack();
+cout<<endl<<endl;
+
+}
+break;
+{
+
+}
+break;
+}
+}
+while(menu!=2);
+}
+return 0;
 }
